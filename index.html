@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Audit — Zarządzanie energią | Odporni i gotowi</title>
+<meta name="description" content="Interaktywne narzędzie Energy Audit z webinaru Zarządzanie energią i efektywność bez wypalenia. Program Odporni i gotowi, Lyra Polska.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --teal-dark: #084C61;
+  --teal: #177E89;
+  --teal-light: #1a9aa7;
+  --coral: #DB3A34;
+  --coral-light: #e85d58;
+  --sand: #FFF3E6;
+  --sand-light: #FFF9F2;
+  --cream: #FFFDFB;
+  --warm-gray: #F5F0EB;
+  --text-dark: #1a2a32;
+  --text-body: #3a4a52;
+  --text-muted: #6a7a82;
+  --white: #ffffff;
+  --shadow-sm: 0 1px 3px rgba(8,76,97,0.08);
+  --shadow-md: 0 4px 16px rgba(8,76,97,0.1);
+  --shadow-lg: 0 8px 32px rgba(8,76,97,0.12);
+  --shadow-xl: 0 16px 48px rgba(8,76,97,0.14);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  color: var(--text-body);
+  background: var(--cream);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Fraunces', Georgia, serif;
+  color: var(--teal-dark);
+  line-height: 1.25;
+}
+
+a { color: var(--teal); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--teal-dark); }
+
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, var(--teal-dark) 0%, #0a6070 40%, var(--teal) 100%);
+  color: var(--white);
+  padding: 60px 24px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -15%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(219,58,52,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero .container { position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  color: var(--white);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  margin-bottom: 16px;
+  max-width: 600px;
+}
+.hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 540px;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+.hero-author {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+.hero-author strong { font-weight: 600; opacity: 1; }
+
+/* ── NAV ── */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,253,251,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(8,76,97,0.08);
+  padding: 0 24px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.sticky-nav::-webkit-scrollbar { display: none; }
+.nav-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  gap: 4px;
+}
+.nav-link {
+  flex-shrink: 0;
+  padding: 14px 16px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--teal-dark);
+  border-bottom-color: var(--teal);
+}
+
+/* ── SECTIONS ── */
+section { padding: 56px 24px; }
+section:nth-child(even) { background: var(--warm-gray); }
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--teal);
+  margin-bottom: 12px;
+}
+.section-label .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--coral);
+  border-radius: 50%;
+}
+
+section h2 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  margin-bottom: 12px;
+}
+section > .container > p:first-of-type {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  max-width: 600px;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(8,76,97,0.06);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+}
+.card p { font-size: 0.95rem; }
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+@media (max-width: 600px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+.card-icon.physical { background: #e8f5e9; }
+.card-icon.emotional { background: #fff3e0; }
+.card-icon.mental { background: #e3f2fd; }
+.card-icon.spiritual { background: #f3e5f5; }
+
+/* ── ENERGY AUDIT TOOL ── */
+.audit-container {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: 36px 32px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(8,76,97,0.06);
+  margin-top: 28px;
+}
+
+.audit-day-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.day-btn {
+  flex-shrink: 0;
+  padding: 10px 20px;
+  border: 2px solid rgba(8,76,97,0.12);
+  border-radius: 100px;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.day-btn:hover { border-color: var(--teal); color: var(--teal); }
+.day-btn.active {
+  background: var(--teal-dark);
+  border-color: var(--teal-dark);
+  color: var(--white);
+}
+.day-btn.has-data {
+  position: relative;
+}
+.day-btn.has-data::after {
+  content: '✓';
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  background: #4caf50;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.audit-time-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--teal);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.audit-time-label .icon { font-size: 1.1rem; }
+
+.dimension-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(8,76,97,0.06);
+}
+.dimension-row:last-child { border-bottom: none; }
+
+.dimension-info {
+  flex: 1;
+  min-width: 0;
+}
+.dimension-emoji { font-size: 1.3rem; margin-right: 4px; }
+.dimension-name {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+.dimension-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.rating-group {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.rating-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(8,76,97,0.12);
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.rating-btn:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+  transform: scale(1.1);
+}
+.rating-btn.selected {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--white);
+}
+.rating-btn.selected.low { background: var(--coral); border-color: var(--coral); }
+.rating-btn.selected.mid { background: #e6a817; border-color: #e6a817; }
+.rating-btn.selected.high { background: #4caf50; border-color: #4caf50; }
+
+.audit-section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(8,76,97,0.1), transparent);
+  margin: 28px 0;
+}
+
+.save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 14px 32px;
+  background: var(--teal-dark);
+  color: var(--white);
+  border: none;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.save-btn:hover { background: var(--teal); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.save-btn:active { transform: translateY(0); }
+
+/* ── RESULTS ── */
+.results-container {
+  margin-top: 32px;
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: 36px 32px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(8,76,97,0.06);
+  display: none;
+}
+.results-container.visible { display: block; }
+
+.result-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.result-label {
+  width: 120px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  flex-shrink: 0;
+}
+.result-bar-bg {
+  flex: 1;
+  height: 28px;
+  background: var(--warm-gray);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+.result-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.result-bar-fill.physical { background: linear-gradient(90deg, #66bb6a, #4caf50); }
+.result-bar-fill.emotional { background: linear-gradient(90deg, #ffb74d, #ff9800); }
+.result-bar-fill.mental { background: linear-gradient(90deg, #64b5f6, #2196f3); }
+.result-bar-fill.spiritual { background: linear-gradient(90deg, #ba68c8, #9c27b0); }
+
+.result-value {
+  width: 44px;
+  text-align: right;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  flex-shrink: 0;
+}
+
+.result-insight {
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--sand-light);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--teal);
+}
+.result-insight h4 { font-size: 1rem; margin-bottom: 8px; }
+.result-insight p { font-size: 0.92rem; }
+
+/* ── CHECKLISTS ── */
+.checklist {
+  list-style: none;
+  margin-top: 20px;
+}
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(8,76,97,0.06);
+  font-size: 0.95rem;
+}
+.checklist li:last-child { border-bottom: none; }
+
+.check-box {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(8,76,97,0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+.check-box:hover { border-color: var(--teal); }
+.check-box.checked {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+.check-box.checked::after {
+  content: '✓';
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.check-text.done { text-decoration: line-through; color: var(--text-muted); }
+
+/* ── ACCORDION ── */
+.accordion-item {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(8,76,97,0.06);
+  overflow: hidden;
+}
+.accordion-header {
+  padding: 20px 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 1rem;
+  transition: background 0.2s;
+  user-select: none;
+}
+.accordion-header:hover { background: var(--sand-light); }
+.accordion-arrow {
+  transition: transform 0.3s;
+  font-size: 1.2rem;
+  color: var(--teal);
+}
+.accordion-item.open .accordion-arrow { transform: rotate(180deg); }
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.accordion-body-inner {
+  padding: 0 24px 24px;
+  font-size: 0.93rem;
+  line-height: 1.7;
+}
+.accordion-body-inner p { margin-bottom: 12px; }
+.accordion-body-inner strong { color: var(--text-dark); }
+.accordion-body-inner .technique {
+  background: var(--sand-light);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin: 12px 0;
+}
+.accordion-body-inner .technique h4 {
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  color: var(--teal-dark);
+}
+
+/* ── BREATHING TOOL ── */
+.breathing-tool {
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  margin-top: 24px;
+}
+.breath-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+  margin: 24px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  transition: transform 4s ease-in-out;
+  position: relative;
+}
+.breath-circle.inhale { transform: scale(1.3); }
+.breath-circle.hold { transform: scale(1.3); }
+.breath-circle.exhale { transform: scale(1); transition-duration: 8s; }
+
+.breath-start-btn {
+  margin-top: 20px;
+  padding: 14px 36px;
+  background: var(--teal-dark);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.breath-start-btn:hover { background: var(--teal); }
+.breath-phase {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 12px;
+  min-height: 24px;
+}
+
+/* ── FOOTER ── */
+.site-footer {
+  background: var(--teal-dark);
+  color: rgba(255,255,255,0.8);
+  padding: 48px 24px;
+  text-align: center;
+}
+.site-footer a { color: rgba(255,255,255,0.9); }
+.site-footer a:hover { color: white; }
+.footer-brand {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 8px;
+}
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+}
+.footer-divider {
+  width: 60px;
+  height: 2px;
+  background: rgba(255,255,255,0.2);
+  margin: 24px auto;
+}
+.footer-copy { font-size: 0.8rem; opacity: 0.6; }
+
+/* ── UTILITY ── */
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mb-8 { margin-bottom: 8px; }
+.text-coral { color: var(--coral); }
+.text-teal { color: var(--teal); }
+.text-sm { font-size: 0.88rem; }
+
+.highlight-box {
+  background: linear-gradient(135deg, var(--sand-light), var(--sand));
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-top: 20px;
+  border-left: 4px solid var(--coral);
+}
+
+.quote-block {
+  font-family: 'Fraunces', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--teal-dark);
+  text-align: center;
+  padding: 32px 24px;
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeInUp 0.6s ease both; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .hero { padding: 40px 20px 36px; }
+  section { padding: 40px 20px; }
+  .audit-container, .results-container { padding: 24px 20px; }
+  .dimension-row { flex-wrap: wrap; gap: 10px; }
+  .rating-group { width: 100%; justify-content: space-between; }
+  .rating-btn { width: 48px; height: 48px; font-size: 1rem; }
+  .result-bar-row { flex-wrap: wrap; }
+  .result-label { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-badge">Odporni i gotowi — Webinar 1</div>
+    <h1>Zarządzanie energią i&nbsp;efektywność bez&nbsp;wypalenia</h1>
+    <p>Interaktywne materiały z webinaru: Energy Audit, techniki regeneracji, checklisty wdrożeniowe i&nbsp;kluczowe treści do przypomnienia.</p>
+    <div class="hero-author">
+      <strong>Jarosław Chybicki</strong><br>
+      Psycholog · Psychoterapeuta (CBT/ACT) · Certyfikowany instruktor Mindfulness<br>
+      Dyrektor Merytoryczny Programów Szkoleniowo-Rozwojowych, Lyra Polska
+    </div>
+  </div>
+</header>
+
+<!-- ═══ NAV ═══ -->
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <a href="#podsumowanie" class="nav-link">Podsumowanie</a>
+    <a href="#energy-audit" class="nav-link">Energy Audit</a>
+    <a href="#techniki" class="nav-link">Techniki</a>
+    <a href="#checklista" class="nav-link">Checklista</a>
+    <a href="#sygnal" class="nav-link">Sygnały</a>
+    <a href="#kontakt" class="nav-link">Kontakt</a>
+  </div>
+</nav>
+
+<!-- ═══ PODSUMOWANIE ═══ -->
+<section id="podsumowanie">
+  <div class="container">
+    <div class="section-label"><span class="dot"></span> Kluczowe treści</div>
+    <h2>Podsumowanie webinaru</h2>
+    <p>Najważniejsze modele, mechanizmy i&nbsp;wnioski z&nbsp;90 minut spotkania — w&nbsp;pigułce.</p>
+
+    <div class="accordion-item open" data-accordion>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>🔋 Waga wymagań i zasobów (model JD-R)</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body" style="max-height:600px">
+        <div class="accordion-body-inner">
+          <p>Wyczerpanie nie bierze się z tego, że za dużo pracujesz. Bierze się z <strong>nierównowagi</strong> między tym, ile od Ciebie wymagają (tempo, złożoność, presja, niepewność), a ile masz zasobów, żeby się z tym zmierzyć (autonomia, wsparcie, sens, kompetencje).</p>
+          <p><strong>Złota zasada:</strong> Jeśli nie możesz zmniejszyć wymagań — świadomie dodaj nowy zasób. Inaczej waga runie.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item" data-accordion>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>⚡ 4 wymiary energii (Loehr &amp; Schwartz)</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>Energia nie jest jednym zbiornikiem. Masz cztery wymiary — każdy opróżnia się i napełnia inaczej:</p>
+          <p><strong>🏃 Fizyczna</strong> — sen, ruch, odżywianie, oddech. „Czy moje ciało ma paliwo?"</p>
+          <p><strong>💛 Emocjonalna</strong> — relacje, bezpieczeństwo, radość. „Czy czuję się dobrze z ludźmi wokół mnie?"</p>
+          <p><strong>🧠 Mentalna</strong> — skupienie, klarowność, kreatywność. „Czy potrafię się skoncentrować?"</p>
+          <p><strong>✨ Duchowa</strong> — sens, wartości, cel. „Czy wiem, po co to robię?" (To nie o religii — to o poczuciu sensu.)</p>
+          <p>Rada „odpocznij" jest bezużyteczna, jeśli nie wiesz, KTÓRY zbiornik potrzebuje uzupełnienia.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item" data-accordion>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>🧠 Jak myślenie kradnie energię (perspektywa CBT)</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>Nie tylko zadania nas męczą. Męczy nas to, <strong>co o nich myślimy</strong>. Każda automatyczna myśl-nakaz kosztuje energię:</p>
+          <p>📩 Sytuacja: mail o zmianie procedury → 💭 Myśl: „Znowu to samo" → 😤 Ciało: napięcie, frustracja → ⚡ Koszt: 30 minut ruminacji zamiast działania.</p>
+          <p><strong>Myśli, które kosztują najwięcej:</strong> „Muszę dać radę sam/sama", „Nie mogę powiedzieć nie", „Inni sobie radzą", „Jeśli odpuszczę, stracę pozycję."</p>
+          <div class="technique">
+            <h4>Technika dystansu od myśli (defuzja)</h4>
+            <p>1. <strong>Zauważ:</strong> „O, znowu to ‚muszę'."<br>
+            2. <strong>Nazwij:</strong> „Mam myśl, że nie mogę odpuścić."<br>
+            3. <strong>Zapytaj:</strong> „Czy ta myśl mi teraz pomaga — czy mnie kosztuje?"</p>
+            <p>Nie walcz z myślą. Po prostu ją zauważ — i zdecyduj, co dalej.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item" data-accordion>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>⏸️ Mikro-przerwy — dlaczego i jak</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p>Mózg działa w cyklach ok. 90–120 minut. Po każdym cyklu potrzebuje regeneracji. <strong>Krótkie przerwy (2–5 min) regularnie &gt; długi odpoczynek na koniec tygodnia.</strong></p>
+          <p><strong>To NIE jest przerwa:</strong> scrollowanie telefonu, sprawdzanie maili „na szybko", rozmowa o pracy przy kawie. To zmiana bodźca, nie regeneracja.</p>
+          <p><strong>Przerwa, która działa:</strong> zmienia stan ciała, angażuje układ przywspółczulny, przerywa ruminację.</p>
+          <p><strong>5 mikro-przerw wbudowanych w dzień:</strong></p>
+          <p>☀️ Rano — 1 min oddechu przed pierwszym mailem<br>
+          🚪 Między spotkaniami — 30 sek. uważnej pauzy<br>
+          🍽️ Po lunchu — 2 min mikro-ruchu<br>
+          ☁️ Popołudniu — zakorzenienie 5-4-3-2-1<br>
+          🌙 Przed wyjściem — 1 min oddechu, rytuał zamykania dnia</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-block mt-32">
+      „Nie chodzi o to, żeby jutro być innym człowiekiem. Chodzi o to, żeby jutro zrobić jedną rzecz inaczej."
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ENERGY AUDIT ═══ -->
+<section id="energy-audit">
+  <div class="container">
+    <div class="section-label"><span class="dot"></span> Narzędzie interaktywne</div>
+    <h2>Energy Audit</h2>
+    <p>Przez 5 dni oceń swoją energię rano i wieczorem. Na koniec zobaczysz swój profil energetyczny i&nbsp;rekomendacje.</p>
+
+    <div class="audit-container" id="auditTool">
+      <div class="audit-day-nav" id="dayNav"></div>
+
+      <div id="auditForm">
+        <div class="audit-time-label"><span class="icon">☀️</span> RANO — Jak zaczynasz dzień?</div>
+        <div id="morningRatings"></div>
+
+        <div class="audit-section-divider"></div>
+
+        <div class="audit-time-label"><span class="icon">🌙</span> WIECZÓR — Jak kończysz dzień?</div>
+        <div id="eveningRatings"></div>
+
+        <button class="save-btn" onclick="saveDay()">
+          <span>💾</span> Zapisz dzień
+        </button>
+      </div>
+    </div>
+
+    <div class="results-container" id="resultsPanel">
+      <h3 style="margin-bottom:8px">📊 Twój profil energetyczny</h3>
+      <p class="text-sm" style="color:var(--text-muted);margin-bottom:24px" id="resultsSummaryText">Średnie z wypełnionych dni</p>
+      <div id="resultsBars"></div>
+      <div class="result-insight" id="resultsInsight"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TECHNIKI ═══ -->
+<section id="techniki">
+  <div class="container">
+    <div class="section-label"><span class="dot"></span> Praktyka</div>
+    <h2>Techniki regeneracji</h2>
+    <p>Dwie techniki przećwiczone na webinarze — do stosowania codziennie.</p>
+
+    <div class="breathing-tool">
+      <h3 style="margin-bottom:4px">🫁 Oddech 4-7-8</h3>
+      <p class="text-sm" style="color:var(--text-muted)">Kiedy ciało jest w napięciu. Aktywuje układ przywspółczulny.</p>
+      <div class="breath-circle" id="breathCircle">Gotowy</div>
+      <div class="breath-phase" id="breathPhase">Kliknij „Start", żeby zacząć ćwiczenie</div>
+      <button class="breath-start-btn" id="breathBtn" onclick="startBreathing()">▶ Start — 3 cykle</button>
+    </div>
+
+    <div class="card mt-32">
+      <h3>🌿 Zakorzenienie (Grounding) 5-4-3-2-1</h3>
+      <p class="mb-8" style="color:var(--text-muted)">Kiedy głowa nie chce się zatrzymać, ruminacja, rozbiegane myśli.</p>
+      <p>Kiedy czujesz, że myśli jadą w kółko — sprowadź się do „tu i teraz":</p>
+      <div class="highlight-box">
+        <p><strong>👁️ 5</strong> rzeczy, które WIDZISZ</p>
+        <p><strong>👂 4</strong> rzeczy, które SŁYSZYSZ</p>
+        <p><strong>✋ 3</strong> rzeczy, które CZUJESZ dotykiem</p>
+        <p><strong>👃 2</strong> rzeczy, które WĄCHASZ</p>
+        <p><strong>👅 1</strong> rzecz, którą SMAKUJESZ</p>
+      </div>
+      <p class="mt-16 text-sm" style="color:var(--text-muted)">Nie musisz wymieniać głośno. Po prostu zauważaj. Całość zajmuje 2–3 minuty.</p>
+    </div>
+
+    <div class="card mt-16">
+      <h3>🧠 Dystans od myśli — kiedy „muszę" nie pomaga</h3>
+      <p class="mt-16">Kiedy przyłapiesz się na myśli-nakazu:</p>
+      <div class="highlight-box">
+        <p><strong>1.</strong> Zauważ: „O, znowu to ‚muszę'."</p>
+        <p><strong>2.</strong> Nazwij: „<em>Mam myśl</em>, że nie mogę odpuścić."</p>
+        <p><strong>3.</strong> Zapytaj: „Czy ta myśl mi teraz <strong>pomaga</strong> — czy mnie <strong>kosztuje</strong>?"</p>
+      </div>
+      <p class="mt-16 text-sm" style="color:var(--text-muted)">3 sekundy, które mogą oszczędzić 30 minut ruminacji.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CHECKLISTA ═══ -->
+<section id="checklista">
+  <div class="container">
+    <div class="section-label"><span class="dot"></span> Wdrożenie</div>
+    <h2>Checklisty do działania</h2>
+    <p>Praktyczne listy kontrolne — zaznaczaj zrealizowane kroki. Postęp zapisuje się w Twojej przeglądarce.</p>
+
+    <div class="card mt-24">
+      <h3>✅ 3 rzeczy po webinarze</h3>
+      <ul class="checklist" id="checklistPost">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">ZAUWAŻ — Zidentyfikuj swój najczęstszy sygnał wyczerpania</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">WYPRÓBUJ — Wybierz jedną mikro-przerwę i zastosuj ją jutro</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">ZDIAGNOZUJ — Zrób Energy Audit przez 5 dni (powyżej ↑)</span></li>
+      </ul>
+    </div>
+
+    <div class="card mt-16">
+      <h3>☀️ Codzienna checklista mikro-regeneracji</h3>
+      <ul class="checklist" id="checklistDaily">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">Rano: 1 minuta oddechu 4-7-8 przed pierwszym mailem</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">Między spotkaniami: 30 sek. uważnej pauzy</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">Lunch: z dala od ekranu (choćby 10 minut)</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">Popołudnie: zakorzenienie 5-4-3-2-1 przy spadku skupienia</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">Przed wyjściem: 1 min oddechu — rytuał zamykania dnia</span></li>
+      </ul>
+    </div>
+
+    <div class="card mt-16">
+      <h3>🧠 Tygodniowa checklista świadomości</h3>
+      <ul class="checklist" id="checklistWeekly">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">Zastosowałem/am technikę dystansu od myśli przynajmniej raz</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">Zauważyłem/am swoją myśl-nakaz i nie potraktowałem/am jej jak faktu</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">Wypełniłem/am Energy Audit za co najmniej 3 dni</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">Zidentyfikowałem/am swój najsłabszy wymiar energii</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span class="check-text">Wybrałem/am jedną konkretną zmianę na następny tydzień</span></li>
+      </ul>
+    </div>
+
+    <div class="card mt-16">
+      <h3>🛡️ Kontrakt z samym sobą</h3>
+      <p class="mt-16">Moja JEDNA mała zmiana na ten tydzień:</p>
+      <textarea id="contractInput" placeholder="Np. „Będę robić 1 minutę oddychania przed pierwszym mailem" albo „Przestanę jeść lunch przy klawiaturze"…" style="width:100%;min-height:80px;margin-top:12px;padding:16px;border:2px solid rgba(8,76,97,0.12);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.95rem;resize:vertical;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='#177E89'" onblur="this.style.borderColor='rgba(8,76,97,0.12)';saveContract()"></textarea>
+      <p class="text-sm mt-16" style="color:var(--text-muted)">Jedna zmiana. Nie pięć. Twój kontrakt zapisze się automatycznie.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SYGNAŁY ═══ -->
+<section id="sygnal">
+  <div class="container">
+    <div class="section-label"><span class="dot"></span> System wczesnego ostrzegania</div>
+    <h2>Sygnały wyczerpania</h2>
+    <p>Wyczerpanie wysyła sygnały. Samo zauważenie to już pierwszy krok do działania.</p>
+
+    <div class="grid-2 mt-24">
+      <div class="card">
+        <div class="card-icon physical">🏃</div>
+        <h3>Ciało</h3>
+        <p>Chroniczne zmęczenie, napięcia mięśniowe, bóle głowy, bezsenność, spadek odporności</p>
+      </div>
+      <div class="card">
+        <div class="card-icon emotional">💛</div>
+        <h3>Emocje</h3>
+        <p>Drażliwość, cynizm, poczucie bezradności, utrata radości z pracy, emocjonalne odcinanie się</p>
+      </div>
+      <div class="card">
+        <div class="card-icon mental">🧠</div>
+        <h3>Zachowanie</h3>
+        <p>Odkładanie zadań, wycofanie z kontaktów, więcej kawy/ekranów, praca po godzinach jako „default"</p>
+      </div>
+      <div class="card">
+        <div class="card-icon spiritual">✨</div>
+        <h3>Myślenie</h3>
+        <p>„To nie ma sensu", „Nie dam rady", trudność z decyzjami, mgła mózgowa, ruminacje</p>
+      </div>
+    </div>
+
+    <div class="highlight-box mt-32">
+      <p style="font-size:1rem"><strong>Sygnały wyczerpania ≠ diagnoza.</strong> To system wczesnego ostrzegania — czerwona lampka, nie wyrok.</p>
+      <p class="mt-16" style="font-size:0.92rem">Jeśli sygnały utrzymują się od tygodni, codzienne funkcjonowanie jest trudne, czujesz, że sam/sama sobie nie poradzisz — <strong>sięgnij po wsparcie:</strong></p>
+      <p class="mt-16" style="font-size:0.92rem">
+        🟢 <strong>Program EAP</strong> — bezpłatne, poufne konsultacje z psychologiem<br>
+        🟢 <strong>Przełożony lub HR</strong> — jeśli potrzebujesz zmian w organizacji pracy<br>
+        🟢 <strong>Lekarz POZ</strong> — jeśli objawy fizyczne się nasilają
+      </p>
+      <p class="mt-16" style="font-weight:600;color:var(--teal-dark)">Proszenie o pomoc to nie słabość. To kompetencja.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ KONTAKT ═══ -->
+<section id="kontakt">
+  <div class="container" style="text-align:center">
+    <div class="section-label" style="justify-content:center"><span class="dot"></span> Program „Odporni i gotowi"</div>
+    <h2>Kontakt i zasoby</h2>
+    <p style="max-width:500px;margin:0 auto 32px">Masz pytania dotyczące webinaru, narzędzi lub programu? Napisz do mnie.</p>
+
+    <div class="card" style="text-align:left;max-width:480px;margin:0 auto">
+      <p style="font-weight:600;font-size:1.05rem;color:var(--text-dark)">Jarosław Chybicki</p>
+      <p class="text-sm" style="color:var(--text-muted)">Psycholog · Psychoterapeuta (CBT/ACT) · Mindfulness<br>Dyrektor Merytoryczny, Lyra Polska</p>
+      <p class="mt-16"><a href="/cdn-cgi/l/email-protection#4822293a273b24293f662b20312a212b23210824313a293827243b2329663824" style="font-weight:600">📧 <span class="__cf_email__" data-cfemail="d0bab1a2bfa3bcb1a7feb3b8a9b2b9b3bbb990bca9a2b1a0bfbca3bbb1fea0bc">[email&#160;protected]</span></a></p>
+      <p class="mt-16"><a href="https://lyrapolska.pl" target="_blank" rel="noopener" style="font-weight:600">🌐 lyrapolska.pl</a></p>
+      <p class="mt-16"><a href="https://lyrapolska.pl/nasz-program-eap/odporni-i-gotowi-program-certyfikacyjno-szkoleniowy" target="_blank" rel="noopener" style="font-weight:500;font-size:0.9rem">→ O programie „Odporni i gotowi"</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="footer-brand">Odporni i gotowi</div>
+  <p>Program szkoleniowo-certyfikacyjny · Lyra Polska</p>
+  <div class="footer-links">
+    <a href="https://lyrapolska.pl" target="_blank" rel="noopener">lyrapolska.pl</a>
+    <a href="/cdn-cgi/l/email-protection#4c262d3e233f202d3b622f24352e252f27250c20353e2d3c23203f272d623c20">Kontakt</a>
+  </div>
+  <div class="footer-divider"></div>
+  <p class="footer-copy">© 2025 Lyra Polska. Materiały z webinaru „Zarządzanie energią i efektywność bez wypalenia".</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ═══ ACCORDION ═══
+function toggleAccordion(header) {
+  const item = header.closest('.accordion-item');
+  const body = item.querySelector('.accordion-body');
+  const isOpen = item.classList.contains('open');
+  
+  // Close all
+  document.querySelectorAll('.accordion-item').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.accordion-body').style.maxHeight = '0';
+  });
+  
+  if (!isOpen) {
+    item.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+// ═══ CHECKLIST ═══
+function toggleCheck(box) {
+  box.classList.toggle('checked');
+  const text = box.nextElementSibling;
+  text.classList.toggle('done');
+  saveChecklists();
+}
+
+function saveChecklists() {
+  const data = {};
+  document.querySelectorAll('.checklist').forEach(list => {
+    const id = list.id;
+    data[id] = Array.from(list.querySelectorAll('.check-box')).map(b => b.classList.contains('checked'));
+  });
+  localStorage.setItem('ea_checklists', JSON.stringify(data));
+}
+
+function loadChecklists() {
+  try {
+    const data = JSON.parse(localStorage.getItem('ea_checklists'));
+    if (!data) return;
+    Object.entries(data).forEach(([id, checks]) => {
+      const list = document.getElementById(id);
+      if (!list) return;
+      const boxes = list.querySelectorAll('.check-box');
+      checks.forEach((checked, i) => {
+        if (checked && boxes[i]) {
+          boxes[i].classList.add('checked');
+          boxes[i].nextElementSibling.classList.add('done');
+        }
+      });
+    });
+  } catch(e) {}
+}
+
+// ═══ CONTRACT ═══
+function saveContract() {
+  localStorage.setItem('ea_contract', document.getElementById('contractInput').value);
+}
+function loadContract() {
+  const v = localStorage.getItem('ea_contract');
+  if (v) document.getElementById('contractInput').value = v;
+}
+
+// ═══ ENERGY AUDIT ═══
+const DIMENSIONS = [
+  { key: 'physical', emoji: '🏃', name: 'Fizyczna', hint: 'Sen, napięcie, witalność' },
+  { key: 'emotional', emoji: '💛', name: 'Emocjonalna', hint: 'Spokój, relacje, bezpieczeństwo' },
+  { key: 'mental', emoji: '🧠', name: 'Mentalna', hint: 'Skupienie, klarowność myślenia' },
+  { key: 'spiritual', emoji: '✨', name: 'Duchowa', hint: 'Sens, cel, wartości' },
+];
+
+let currentDay = 0;
+let auditData = {};
+
+function loadAuditData() {
+  try {
+    const d = JSON.parse(localStorage.getItem('ea_audit'));
+    if (d) auditData = d;
+  } catch(e) {}
+}
+
+function saveAuditData() {
+  localStorage.setItem('ea_audit', JSON.stringify(auditData));
+}
+
+function buildDayNav() {
+  const nav = document.getElementById('dayNav');
+  nav.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'day-btn' + (i === currentDay ? ' active' : '');
+    btn.textContent = 'Dzień ' + (i + 1);
+    if (auditData[i]) {
+      btn.classList.add('has-data');
+    }
+    btn.onclick = () => { currentDay = i; renderAudit(); };
+    nav.appendChild(btn);
+  }
+}
+
+function buildRatings(containerId, timeKey) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  DIMENSIONS.forEach(dim => {
+    const row = document.createElement('div');
+    row.className = 'dimension-row';
+    
+    const info = document.createElement('div');
+    info.className = 'dimension-info';
+    info.innerHTML = `<span class="dimension-emoji">${dim.emoji}</span><span class="dimension-name">${dim.name}</span><div class="dimension-hint">${dim.hint}</div>`;
+    
+    const group = document.createElement('div');
+    group.className = 'rating-group';
+    
+    const saved = auditData[currentDay]?.[timeKey]?.[dim.key] || 0;
+    
+    for (let v = 1; v <= 5; v++) {
+      const btn = document.createElement('button');
+      btn.className = 'rating-btn';
+      btn.textContent = v;
+      if (v === saved) {
+        btn.classList.add('selected');
+        if (v <= 2) btn.classList.add('low');
+        else if (v === 3) btn.classList.add('mid');
+        else btn.classList.add('high');
+      }
+      btn.onclick = () => {
+        if (!auditData[currentDay]) auditData[currentDay] = {};
+        if (!auditData[currentDay][timeKey]) auditData[currentDay][timeKey] = {};
+        auditData[currentDay][timeKey][dim.key] = v;
+        renderAudit();
+      };
+      group.appendChild(btn);
+    }
+    
+    row.appendChild(info);
+    row.appendChild(group);
+    container.appendChild(row);
+  });
+}
+
+function renderAudit() {
+  buildDayNav();
+  buildRatings('morningRatings', 'morning');
+  buildRatings('eveningRatings', 'evening');
+  updateResults();
+}
+
+function saveDay() {
+  saveAuditData();
+  const btn = document.querySelector('.save-btn');
+  btn.innerHTML = '<span>✅</span> Zapisano!';
+  btn.style.background = '#4caf50';
+  setTimeout(() => {
+    btn.innerHTML = '<span>💾</span> Zapisz dzień';
+    btn.style.background = '';
+  }, 1500);
+  if (currentDay < 4) {
+    setTimeout(() => {
+      currentDay++;
+      renderAudit();
+    }, 800);
+  }
+  updateResults();
+}
+
+function updateResults() {
+  const panel = document.getElementById('resultsPanel');
+  const filledDays = Object.keys(auditData).filter(k => {
+    const d = auditData[k];
+    return d && d.morning && d.evening;
+  });
+  
+  if (filledDays.length < 1) {
+    panel.classList.remove('visible');
+    return;
+  }
+  
+  panel.classList.add('visible');
+  
+  const avgs = {};
+  DIMENSIONS.forEach(dim => {
+    let sum = 0, count = 0;
+    filledDays.forEach(day => {
+      const d = auditData[day];
+      if (d.morning?.[dim.key]) { sum += d.morning[dim.key]; count++; }
+      if (d.evening?.[dim.key]) { sum += d.evening[dim.key]; count++; }
+    });
+    avgs[dim.key] = count > 0 ? (sum / count) : 0;
+  });
+  
+  const bars = document.getElementById('resultsBars');
+  bars.innerHTML = '';
+  
+  DIMENSIONS.forEach(dim => {
+    const avg = avgs[dim.key];
+    const pct = (avg / 5) * 100;
+    bars.innerHTML += `
+      <div class="result-bar-row">
+        <div class="result-label">${dim.emoji} ${dim.name}</div>
+        <div class="result-bar-bg">
+          <div class="result-bar-fill ${dim.key}" style="width:${pct}%"></div>
+        </div>
+        <div class="result-value">${avg.toFixed(1)}</div>
+      </div>
+    `;
+  });
+  
+  // Find weakest & strongest
+  let weakest = DIMENSIONS[0], strongest = DIMENSIONS[0];
+  DIMENSIONS.forEach(dim => {
+    if (avgs[dim.key] < avgs[weakest.key]) weakest = dim;
+    if (avgs[dim.key] > avgs[strongest.key]) strongest = dim;
+  });
+  
+  const tips = {
+    physical: 'Zadbaj o fundamenty: sen (7–8h), ruch (nawet 15 min spaceru), regularne posiłki z dala od ekranu, techniki oddechowe.',
+    emotional: 'Szukaj regeneracji w relacjach: rozmowa z bliską osobą, chwila radości, granice wobec toksycznych interakcji, nazwanie emocji zamiast ich tłumienia.',
+    mental: 'Chroń swoją uwagę: wyciszaj powiadomienia, pracuj w blokach skupienia, rób przerwy od ekranów, stosuj zakorzenienie przy ruminacji.',
+    spiritual: 'Przypomnij sobie „po co": wróć do wartości, które są dla Ciebie ważne. Zastanów się, co w Twojej pracy ma sens — nawet jeśli procesy się zmieniają.',
+  };
+  
+  const insight = document.getElementById('resultsInsight');
+  insight.innerHTML = `
+    <h4>💡 Twój profil na podstawie ${filledDays.length} ${filledDays.length === 1 ? 'dnia' : 'dni'}</h4>
+    <p><strong>Najsłabszy wymiar: ${weakest.emoji} ${weakest.name}</strong> (średnia: ${avgs[weakest.key].toFixed(1)}/5)<br>
+    ${tips[weakest.key]}</p>
+    <p class="mt-16"><strong>Twój zasób: ${strongest.emoji} ${strongest.name}</strong> (średnia: ${avgs[strongest.key].toFixed(1)}/5) — to fundament, na którym możesz budować.</p>
+  `;
+  
+  document.getElementById('resultsSummaryText').textContent = `Średnie z ${filledDays.length} ${filledDays.length === 1 ? 'wypełnionego dnia' : 'wypełnionych dni'}`;
+}
+
+// ═══ BREATHING ═══
+let breathingActive = false;
+
+function startBreathing() {
+  if (breathingActive) return;
+  breathingActive = true;
+  const circle = document.getElementById('breathCircle');
+  const phase = document.getElementById('breathPhase');
+  const btn = document.getElementById('breathBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Trwa ćwiczenie…';
+  
+  let cycle = 0;
+  const totalCycles = 3;
+  
+  function runCycle() {
+    if (cycle >= totalCycles) {
+      circle.className = 'breath-circle';
+      circle.textContent = '✓';
+      phase.textContent = 'Gotowe! Zauważ, co się zmieniło.';
+      btn.disabled = false;
+      btn.textContent = '▶ Powtórz';
+      breathingActive = false;
+      return;
+    }
+    
+    // Inhale 4s
+    circle.className = 'breath-circle inhale';
+    circle.textContent = 'Wdech';
+    phase.textContent = `Cykl ${cycle + 1}/${totalCycles} — Wdech nosem… licz do 4`;
+    
+    setTimeout(() => {
+      // Hold 7s
+      circle.className = 'breath-circle hold';
+      circle.textContent = 'Wstrzymaj';
+      phase.textContent = `Cykl ${cycle + 1}/${totalCycles} — Wstrzymaj oddech… licz do 7`;
+      
+      setTimeout(() => {
+        // Exhale 8s
+        circle.className = 'breath-circle exhale';
+        circle.textContent = 'Wydech';
+        phase.textContent = `Cykl ${cycle + 1}/${totalCycles} — Wydech ustami… licz do 8`;
+        
+        setTimeout(() => {
+          cycle++;
+          runCycle();
+        }, 8000);
+      }, 7000);
+    }, 4000);
+  }
+  
+  runCycle();
+}
+
+// ═══ NAV HIGHLIGHT ═══
+function updateNav() {
+  const links = document.querySelectorAll('.nav-link');
+  const sections = ['podsumowanie', 'energy-audit', 'techniki', 'checklista', 'sygnal', 'kontakt'];
+  const scrollY = window.scrollY + 80;
+  
+  let current = sections[0];
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop <= scrollY) current = id;
+  });
+  
+  links.forEach(link => {
+    link.classList.toggle('active', 
